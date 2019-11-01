@@ -25,13 +25,13 @@ class apim inherits apim::params {
 
   # Unzip the binary and create setup
   exec { "unzip-pack":
-    command => "unzip puppet:///modules/${module_name}/products/${product_binary}",
+    command => "unzip puppet:///modules/${module_name}/files/products/${product_binary}",
     path    => "/usr/bin/",
   }
 
   # Copy configuration changes to the installed directory
   $template_list.each |String $template| {
-    file { "${carbon_home}/${template}":
+    file { "puppet:///modules/${module_name}/files/products/wso2am-3.0.0/${template}":
       ensure  => file,
       mode    => '0644',
       content => template("${module_name}/carbon-home/${template}.erb"),
