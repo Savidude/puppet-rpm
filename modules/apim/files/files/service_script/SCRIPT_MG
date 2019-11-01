@@ -1,0 +1,40 @@
+#! /bin/bash
+#
+### BEGIN INIT INFO
+# Provides:          wso2
+# Product:           __PRODUCT__
+# Product Version:   __PRODUCT_VERSION__
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop the wso2 product server daemon
+# Description:       Controls the main WSO2 product server daemon
+### END INIT INFO
+#
+
+# please add the path to executable balx file
+EXE_BALX_PATH=""
+
+WSO2_HOME="/usr/lib64/wso2/__PRODUCT__/__PRODUCT_VERSION__"
+
+# defeine service commands
+startcmd="${WSO2_HOME}/__SERVICE__ start ${EXE_BALX_PATH}"
+restartcmd="${WSO2_HOME}/__SERVICE__ restart ${EXE_BALX_PATH}"
+stopcmd="${WSO2_HOME}/__SERVICE__ stop"
+
+case "$1" in
+start)
+   echo "Starting the WSO2 server ..."
+   sudo bash ${startcmd}
+;;
+restart)
+   echo "Restarting the WSO2 server ..."
+   sudo bash ${restartcmd}
+;;
+stop)
+   echo "Stopping the WSO2 server ..."
+   sudo bash ${stopcmd}
+;;
+*)
+   echo "Usage: sudo service <PRODUCT_NAME> <start|stop|restart>"
+exit 1
+esac
