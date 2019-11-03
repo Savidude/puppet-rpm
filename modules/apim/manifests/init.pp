@@ -23,18 +23,52 @@ class apim inherits apim::params {
     ensure => installed
   }
 
-  # Unzip the binary and create setup
+  file { "move-installer-scripts":
+    ensure => "directory",
+    source => "puppet:///modules/${module_name}/",
+    recurse => "remote",
+    path => "${product_dir}",
+  }
+
   exec { "unzip-pack":
-    command => "unzip puppet:///modules/${module_name}/files/products/${product_binary}",
+    command => "unzip ${product_dir}/products/${product_binary}",
     path    => "/usr/bin/",
+    cwd     => "${product_dir}/products/",
+    require => File["move-installer-scripts"]
   }
 
   # Copy configuration changes to the installed directory
   $template_list.each |String $template| {
-    file { "puppet:///modules/${module_name}/files/products/wso2am-3.0.0/${template}":
+    file { "${product_dir}/products/wso2am-3.0.0/${template}":
       ensure  => file,
       mode    => '0644',
       content => template("${module_name}/carbon-home/${template}.erb"),
+      require => Exec["unzip-pack"],
     }
+  }
+
+  exec { "delete-pack":
+    command => "rm ${product_dir}/products/${product_binary}",
+    path    => "/usr/bin/",
+    require => Exec["unzip-pack"],
+  }
+
+  exec { "repackage":
+    command => "zip -r ${product_binary} wso2am-${version}",
+    path    => "/usr/bin/",
+    cwd     => "${product_dir}/products/",
+    require => Exec["delete-pack"],
+  }
+
+  exec { "delete-server":
+    command => "rm -rf wso2am-${version}",
+    path    => "/usr/bin/",
+    cwd     => "${product_dir}/products/",
+    require => Exec["repackage"],
+  }
+
+  exec { "build-installer":
+    command => "/bin/sh ${product_dir}/generate_installers.sh",
+    cwd     => "${product_dir}",
   }
 }

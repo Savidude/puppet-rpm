@@ -42,79 +42,9 @@ class apim_common::params {
   $jdk_name = 'amazon-corretto-8.222.10.1-linux-x64'
   $java_home = "${java_dir}/${jdk_name}"
 
-  $profile = $profile
   $target = "/mnt"
-  $product_dir = "${target}/${profile}"
-  $pack_dir = "${target}/${profile}/packs"
-  $wso2_service_name = "wso2${profile}"
-
-  # ----- Profile configs -----
-  case $profile {
-    'apim_analytics_dashboard': {
-      $pack = "wso2am-analytics-${version}"
-      # $remote_pack = "<URL_TO_APIM_ANALYTICS_WORKER_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/dashboard.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2/dashboard/runtime.pid"
-    }
-    'apim_analytics_worker': {
-      $pack = "wso2am-analytics-${version}"
-      # $remote_pack = "<URL_TO_APIM_ANALYTICS_WORKER_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/worker.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2/worker/runtime.pid"
-    }
-    'apim_gateway': {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_GATEWAY_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = "-Dprofile=gateway-worker"
-    }
-    'apim_is_as_km': {
-      $pack = "wso2is-km-5.9.0"
-      # $remote_pack = "<URL_TO_IS_AS_KM_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-    }
-    'apim_km': {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_KEYMANAGER_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = "-Dprofile=api-key-manager"
-    }
-    'apim_publisher': {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_PUBLISHER_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = "-Dprofile=api-publisher"
-    }
-    'apim_devportal': {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_DEVPORTAL_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = "-Dprofile=api-devportal"
-    }
-    'apim_tm': {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_TRAFFICMANAGER_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = "-Dprofile=traffic-manager"
-    }
-    default: {
-      $pack = "wso2am-${version}"
-      # $remote_pack = "<URL_TO_APIM_PACK>"
-      $server_script_path = "${product_dir}/${pack}/bin/wso2server.sh"
-      $pid_file_path = "${product_dir}/${pack}/wso2carbon.pid"
-      $optimize_params = ""
-    }
-  }
-
-  # Pack Directories
-  $carbon_home = "${product_dir}/${pack}"
-  $product_binary = "${pack}.zip"
+  $product_dir = "${target}/installer-resources"
+  $product_binary = "wso2am-${version}.zip"
 
   # Server stop retry configs
   $try_count = 5
